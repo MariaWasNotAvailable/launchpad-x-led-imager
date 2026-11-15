@@ -1,0 +1,23 @@
+{
+  "name": "launchpad-x-led-imager",
+  "version": "1.0.0",
+  "description": "A browser app for creating and displaying colors on the 8 × 8 pad grid of a Novation Launchpad X, written in TypeScript.",
+  "private": true,
+  "scripts": {
+    "build": "tsc --noEmit && esbuild src/app.ts --bundle --format=iife --target=es2020 --sourcemap --outfile=dist/app.js && node scripts/copy-assets.js",
+    "dev": "node server.js",
+    "start": "node server.js",
+    "test": "tsc -p tsconfig.test.json && mocha test-dist/test/logic.test.js"
+  },
+  "devDependencies": {
+    "@types/chai": "^5.2.3",
+    "@types/mocha": "^10.0.10",
+    "chai": "^6.3.0",
+    "clean-css": "^5.3.3",
+    "esbuild": "^0.25.0",
+    "mocha": "^12.0.3",
+    "terser": "^5.51.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.0"
+  }
+}

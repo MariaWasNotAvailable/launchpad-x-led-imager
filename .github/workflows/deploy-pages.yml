@@ -1,0 +1,54 @@
+name: Build and deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: deploy-github-pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out application
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Check out website
+        uses: actions/checkout@v4
+        with:
+          repository: MariaWasNotAvailable/MariaWasNotAvailable.github.io
+          ref: main
+          token: ${{ secrets.PAGES_REPO_TOKEN }}
+          path: website
+
+      - name: Publish build
+        run: |
+          mkdir -p website/launchpad-x-led-imager
+          rsync -a --delete dist/ website/launchpad-x-led-imager/
+          git -C website config user.name github-actions[bot]
+          git -C website config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git -C website add --all -- launchpad-x-led-imager
+          if git -C website diff --cached --quiet -- launchpad-x-led-imager; then
+            echo "No deployment changes to publish."
+          else
+            git -C website commit -m "Deploy Launcpad X LED Imager"
+            git -C website push origin HEAD:main
+          fi

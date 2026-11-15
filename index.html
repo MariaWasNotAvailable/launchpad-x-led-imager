@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#181a1f">
+  <title>Launchpad X LED Imager</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="dist/app.js" defer></script>
+</head>
+<body>
+  <header class="app-navbar">
+    <div class="navbar-fields">
+      <div class="app-brand">
+        <span class="eyebrow">Launchpad X</span>
+        <span class="app-title">LED Imager</span>
+      </div>
+      <label class="visually-hidden" for="midi-output">MIDI output</label>
+      <select id="midi-output" disabled>
+        <option value="">Click Connect to find MIDI devices</option>
+      </select>
+      <small class="midi-status" id="midi-status" role="status" aria-live="polite">Not connected</small>
+    </div>
+    <div class="navbar-actions">
+      <button class="fixed-button" id="connect-midi" type="button">Connect</button>
+      <button class="fixed-button" id="clear-grid" type="button">Clear all</button>
+      <button class="fixed-button" id="responsive-layout" type="button" aria-pressed="true">Responsive</button>
+    </div>
+  </header>
+
+  <main class="container is-responsive">
+    <div class="tab-list" role="tablist" aria-label="Editor mode">
+      <button id="tab-video" class="tab-button" type="button" role="tab" aria-selected="true" aria-controls="panel-video" tabindex="0">Video</button>
+      <button id="tab-image" class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="panel-image" tabindex="-1">Image</button>
+      <button id="tab-manual" class="tab-button" type="button" role="tab" aria-selected="false" aria-controls="panel-manual" tabindex="-1">Manual</button>
+    </div>
+
+    <section id="panel-video" class="tab-panel" role="tabpanel" aria-labelledby="tab-video" tabindex="0">
+      <h1>Video</h1>
+      <p class="description">Choose a video to preview its frames on the 8 × 8 grid. Slow MIDI output drops stale frames.</p>
+      <div class="media-content">
+        <div class="media-controls">
+          <div class="file-picker">
+            <label for="video-file">Choose a video (MP4 or WebM, drag & drop)</label>
+            <input id="video-file" class="file-input" type="file" accept="video/mp4,video/webm,.mp4,.webm">
+          </div>
+          <div class="media-select">
+            <label for="video-fit-mode">Frame sizing</label>
+            <select id="video-fit-mode">
+              <option value="fit" selected>Fit</option>
+              <option value="fill">Fill</option>
+              <option value="stretch">Stretch</option>
+            </select>
+          </div>
+          <button id="preview-video" type="button" disabled>Preview</button>
+          <button id="play-video" type="button" disabled>Play on Launchpad</button>
+        </div>
+        <div class="video-preview">
+          <video id="video-preview" controls playsinline aria-label="Local video preview"></video>
+          <div class="led-grid" id="video-grid" role="group" aria-label="8 × 8 video frame preview"></div>
+        </div>
+      </div>
+      <p class="hint">Fit preserves the frame's aspect ratio; Fill crops; Stretch distorts. Preview plays locally. Play on Launchpad streams sampled frames when connected; slower MIDI output skips frames to avoid lag. Video files stay on your device.</p>
+    </section>
+
+    <section id="panel-image" class="tab-panel" role="tabpanel" aria-labelledby="tab-image" tabindex="0" hidden>
+      <h1>Static image</h1>
+      <p class="description">Choose an image, or paste one from the clipboard, and pick a sizing mode for the square grid.</p>
+      <div class="media-content">
+        <div class="media-controls">
+          <div class="file-picker">
+            <label for="image-file">Choose an image (drag & drop, or paste)</label>
+            <input id="image-file" class="file-input" type="file" accept="image/*">
+          </div>
+          <div class="media-select">
+            <label for="image-fit-mode">Image sizing</label>
+            <select id="image-fit-mode">
+              <option value="fit" selected>Fit</option>
+              <option value="fill">Fill</option>
+              <option value="stretch">Stretch</option>
+            </select>
+          </div>
+          <button id="send-image" type="button">Send to Launchpad</button>
+          <button id="paste-image" type="button">Paste image</button>
+        </div>
+        <div class="image-preview">
+          <div class="led-grid" id="image-grid" role="group" aria-label="8 × 8 image preview"></div>
+        </div>
+      </div>
+      <p class="hint">Fit preserves aspect ratio within the grid; Fill crops to cover; Stretch distorts to fill. Colors are sampled to an 8 × 8 grid and sent to the Launchpad when connected. Files are read locally and are not uploaded.</p>
+    </section>
+
+    <section id="panel-manual" class="tab-panel" role="tabpanel" aria-labelledby="tab-manual" tabindex="0" hidden>
+      <h1>Pad colors</h1>
+      <p class="description">Enter a hex value, three RGB numbers, or a named HTML color for each pad.</p>
+      <section class="controller" aria-label="Launchpad 8 by 8 LED color grid">
+        <div class="led-grid" id="led-grid" role="group" aria-label="Launchpad 8 by 8 LED color grid"></div>
+      </section>
+      <p class="hint">Examples: <code>#00ff00</code>, <code>00FF00</code>, <code>0, 255, 0</code>, <code>darkred</code>. RGB channels range from 0 to 255. Valid colors are sent as you edit.</p>
+    </section>
+  </main>
+</body>
+</html>
