@@ -2,6 +2,8 @@
 
 A small, standalone browser app for creating and displaying colors on the 8 × 8 pad grid of a Novation Launchpad X. Use the Video mode to stream video frames, the Image mode to map a still image to the grid, or the Manual mode to edit pad colors directly. Connect the Launchpad over USB MIDI to display your work on the controller.
 
+![Screenshot of Launchpad X LED Imager](lpx.webp)
+
 ## Features
 
 - Three tabs for different workflows: video playback (Video), still-image mapping (Image), and direct color editing (Manual).
