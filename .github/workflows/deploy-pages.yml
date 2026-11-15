@@ -36,7 +36,7 @@ jobs:
         with:
           repository: MariaWasNotAvailable/MariaWasNotAvailable.github.io
           ref: main
-          token: ${{ secrets.PAGES_REPO_TOKEN }}
+          token: ${{ secrets.PAGES_REPO_TOKEN_2 }}
           path: website
 
       - name: Publish build
